@@ -9,10 +9,10 @@ export type Meal = {
   fat: number;
   carbo: number;
   calorie: number;
-  createdAt: string;
+  created_at: string;
 };
 
-export type MealEntry = Omit<Meal, "id" | "createdAt">;
+export type MealEntry = Omit<Meal, "id" | "created_at">;
 
 async function withConnection<T>(
   run: (conn: postgres.PoolClient) => Promise<T>,
