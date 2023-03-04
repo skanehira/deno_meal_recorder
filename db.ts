@@ -6,6 +6,9 @@ const config: postgres.ClientOptions = {
   hostname: Deno.env.get("HOST_NAME"),
   user: Deno.env.get("DB_USER"),
   database: Deno.env.get("DATABASE"),
+  tls: {
+    enabled: false,
+  }
 };
 
 const pool = new postgres.Pool(config, 2, true);
