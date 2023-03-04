@@ -1,6 +1,9 @@
 import { get, list, Meal, MealEntry, record, remove, update } from "./meal.ts";
 import { newConnection, TABLE_NAME } from "./db.ts";
 import { assertEquals } from "https://deno.land/std@0.178.0/testing/asserts.ts";
+import { createTable } from "./scripts/create_table.ts";
+
+await createTable();
 
 async function withTestSetup(test: () => Promise<void>) {
   const conn = await newConnection();
