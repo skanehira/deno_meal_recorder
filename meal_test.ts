@@ -13,7 +13,8 @@ async function withTestSetup(test: () => Promise<void>) {
 }
 
 function assertMeal(want: MealEntry, meal: Meal) {
-  const got = (({ id: _i, createdAt: _c, ...rest }) => ({ ...rest }))(
+  // deno-lint-ignore no-unused-vars
+  const got = (({ id, createdAt, ...rest }) => ({ ...rest }))(
     meal,
   );
   assertEquals(got, want);
