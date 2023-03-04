@@ -19,14 +19,14 @@ async function withConnection<T>(
 ): Promise<T> {
   const conn = await newConnection();
   try {
-    return run(conn);
+    return await run(conn);
   } finally {
     conn.release();
   }
 }
 
 export async function record(meal: MealEntry): Promise<void> {
-  return await withConnection(async (conn) => {
+  await withConnection(async (conn) => {
     await conn.queryObject(
       `INSERT INTO ${TABLE_NAME}
       (name, protein, fat, carbo, calorie) VALUES
@@ -45,13 +45,14 @@ export async function list(): Promise<Meal[]> {
 
 export async function get(id: number): Promise<Meal> {
   return await withConnection(async (conn) => {
-    const resp = await conn.queryObject<
-      Meal
-    >(`SELECT * from ${TABLE_NAME} where id = $id`, { id });
+    const resp = await conn.queryObject<Meal>(
+      `SELECT * from ${TABLE_NAME} where id = $id`,
+      { id },
+    );
     if (resp.rows.length === 0) {
       throw new NotFoundMealError(`not found meal with id ${id}`);
     }
-    return resp.rows[0] as Meal;
+    return resp.rows[0];
   });
 }
 

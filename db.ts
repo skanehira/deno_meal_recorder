@@ -8,7 +8,7 @@ const config: postgres.ClientOptions = {
   database: Deno.env.get("DATABASE"),
   tls: {
     enabled: false,
-  }
+  },
 };
 
 const pool = new postgres.Pool(config, 2, true);
