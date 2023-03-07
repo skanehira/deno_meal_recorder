@@ -37,3 +37,14 @@ CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (
     conn.release();
   }
 }
+
+export async function withConnection<T>(
+  run: (conn: postgres.PoolClient) => Promise<T>,
+): Promise<T> {
+  const conn = await newConnection();
+  try {
+    return await run(conn);
+  } finally {
+    conn.release();
+  }
+}

@@ -1,6 +1,5 @@
-import { postgres } from "./deps.ts";
 import { NotFoundMealError } from "./error.ts";
-import { newConnection, TABLE_NAME } from "./db.ts";
+import { TABLE_NAME, withConnection } from "./db.ts";
 
 export type Meal = {
   id: number;
@@ -13,17 +12,6 @@ export type Meal = {
 };
 
 export type MealEntry = Omit<Meal, "id" | "created_at">;
-
-async function withConnection<T>(
-  run: (conn: postgres.PoolClient) => Promise<T>,
-): Promise<T> {
-  const conn = await newConnection();
-  try {
-    return await run(conn);
-  } finally {
-    conn.release();
-  }
-}
 
 export async function record(meal: MealEntry): Promise<void> {
   await withConnection(async (conn) => {

@@ -1,17 +1,14 @@
 import { get, list, Meal, MealEntry, record, remove, update } from "./meal.ts";
-import { createTable, newConnection, TABLE_NAME } from "./db.ts";
+import { createTable, TABLE_NAME, withConnection } from "./db.ts";
 import { assertEquals } from "https://deno.land/std@0.178.0/testing/asserts.ts";
 
 await createTable();
 
 async function withTestSetup(test: () => Promise<void>) {
-  const conn = await newConnection();
-  try {
+  await withConnection(async (conn) => {
     await conn.queryObject(`DELETE FROM ${TABLE_NAME}`);
     await test();
-  } finally {
-    conn.release();
-  }
+  });
 }
 
 function assertMeal(want: MealEntry, meal: Meal) {
