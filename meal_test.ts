@@ -56,8 +56,15 @@ Deno.test({
     await withTestSetup(async () => {
       await record(meal);
       const id = (await list())[0].id;
-      await update(id, meal);
-      assertMeal(meal, await get(id));
+      const newMeal = {
+        name: "トマト",
+        protein: 15,
+        fat: 25,
+        carbo: 35,
+        calorie: 45,
+      };
+      await update(id, newMeal);
+      assertMeal(newMeal, await get(id));
     });
   },
   sanitizeResources: false,
