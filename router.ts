@@ -9,7 +9,7 @@ meals.get("/", async (ctx) => {
 });
 
 meals.get("/:id", async (ctx) => {
-  const id = parseInt(ctx?.params?.id);
+  const id = parseInt(ctx.params.id);
   const meal = await get(id);
   ctx.response.body = JSON.stringify(meal);
 });
@@ -21,13 +21,13 @@ meals.post("/", async (ctx) => {
 });
 
 meals.delete("/:id", async (ctx) => {
-  const id = parseInt(ctx?.params?.id);
+  const id = parseInt(ctx.params.id);
   await remove(id);
   ctx.response.status = 204;
 });
 
 meals.patch("/:id", async (ctx) => {
-  const id = parseInt(ctx?.params?.id);
+  const id = parseInt(ctx.params.id);
   const meal = await ctx.request.body({ type: "json" }).value as MealEntry;
   await update(id, meal);
   ctx.response.status = 204;
