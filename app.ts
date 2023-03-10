@@ -7,7 +7,6 @@ const app = new Application();
 app.use(async (ctx, next) => {
   try {
     await next();
-    ctx.response.headers.set("Content-Type", "application/json; charset=UTF-8");
   } catch (e) {
     if (e instanceof NotFoundMealError) {
       ctx.response.status = 404;
@@ -15,6 +14,8 @@ app.use(async (ctx, next) => {
       ctx.response.status = 500;
     }
     ctx.response.body = JSON.stringify({ message: e.message });
+  } finally {
+    ctx.response.headers.set("Content-Type", "application/json; charset=UTF-8");
   }
 });
 
