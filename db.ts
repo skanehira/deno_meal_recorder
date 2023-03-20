@@ -17,7 +17,7 @@ export async function getConnection(): Promise<postgres.PoolClient> {
   return await pool.connect();
 }
 
-export const TABLE_NAME = Deno.env.get("TABLE_NAME");
+export const TABLE_NAME = Deno.env.get("TABLE_NAME") || "meals";
 
 export async function createTable() {
   const conn = await getConnection();
