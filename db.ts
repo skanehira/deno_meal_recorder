@@ -13,14 +13,14 @@ const config: postgres.ClientOptions = {
 
 const pool = new postgres.Pool(config, 2, true);
 
-export async function newConnection(): Promise<postgres.PoolClient> {
+export async function getConnection(): Promise<postgres.PoolClient> {
   return await pool.connect();
 }
 
 export const TABLE_NAME = Deno.env.get("TABLE_NAME");
 
 export async function createTable() {
-  const conn = await newConnection();
+  const conn = await getConnection();
   try {
     await conn.queryObject(`
 CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (
 export async function withConnection<T>(
   run: (conn: postgres.PoolClient) => Promise<T>,
 ): Promise<T> {
-  const conn = await newConnection();
+  const conn = await getConnection();
   try {
     return await run(conn);
   } finally {
