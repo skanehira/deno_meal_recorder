@@ -13,7 +13,7 @@ $ deno run --allow-read --allow-net --allow-env main.ts
 curl -X POST -H "Content-Type: application/json" http://localhost:8080/meals -d '{"name": "パスタ", "protein": 10, "fat": 10, "carbo": 30, "calorie": 250}'
 
 # 記録した食事情報一覧
-curl http://localhost:8080/meals
+curl -s http://localhost:8080/meals | jq
 [
   {
     "id": 1,
@@ -26,9 +26,6 @@ curl http://localhost:8080/meals
   }
   ...
 ]
-
-# 特定の食事情報を取得する
-curl http://localhost:8080/meals/1
 
 # 食事情報の更新
 curl -X PATCH -H "Content-Type: application/json" http://localhost:8080/meals/1 -d '{"protein": 20}'

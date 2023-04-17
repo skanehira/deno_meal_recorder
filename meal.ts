@@ -1,4 +1,3 @@
-import { NotFoundMealError } from "./error.ts";
 import { TABLE_NAME, withConnection } from "./db.ts";
 
 export type Meal = {
@@ -28,19 +27,6 @@ export async function list(): Promise<Meal[]> {
   return await withConnection(async (conn) => {
     const resp = await conn.queryObject<Meal>(`SELECT * from ${TABLE_NAME}`);
     return resp.rows;
-  });
-}
-
-export async function get(id: number): Promise<Meal> {
-  return await withConnection(async (conn) => {
-    const resp = await conn.queryObject<Meal>(
-      `SELECT * from ${TABLE_NAME} where id = $id`,
-      { id },
-    );
-    if (resp.rows.length === 0) {
-      throw new NotFoundMealError(`not found meal with id ${id}`);
-    }
-    return resp.rows[0];
   });
 }
 
